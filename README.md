@@ -1,4 +1,4 @@
-# Nickname Skript [<img src="https://img.shields.io/github/downloads/kim-yoa/Stock.sk/total.svg?style=for-the-badge" alt="downloads">](../../releases/latest)
+# Stock Skript [<img src="https://img.shields.io/github/downloads/kim-yoa/Stock.sk/total.svg?style=for-the-badge" alt="downloads">](../../releases/latest)
 
 
 ### YOA's Stock Skript
