@@ -177,7 +177,7 @@ function stock_main(p:player):
     open chest with 3 rows named "&0주식 메뉴" to {_p}
     set slot 10 of current inventory of {_p} to bell named "&e알림설정" with lore "&f 메시지 : %{notification::%{stock.notification.text::%uuid of {_p}%}%}%", "&f 소리 : %{notification::%{stock.notification.sound::%uuid of {_p}%}%}%", " ", "&7좌클릭으로 메시지 알림 변경" and "&7우클릭으로 소리 알림 변경"
     set slot 13 of current inventory of {_p} to paper named "&e시세확인" with custom model data {@stock.modeldata.checkstock}
-    set slot 16 of current inventory of {_p} to clock named "&e주가변동" with lore "&8%{@interval} - {stock.tax::min}%&7분 남음"
+    set slot 16 of current inventory of {_p} to clock named "&e주가변동" with lore "&8%{@interval} - {stock_min}%&7분 남음"
 
 function stock_price(p:player):
     play sound "minecraft:ui.button.click" to {_p}
