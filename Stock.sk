@@ -1,0 +1,445 @@
+#######################################################################################
+# ©2024 Kimyoa. All Rights Reserved.
+# 버그 리포트는 biz@kimyoa.com / https://github.com/kim-yoa/Stock.sk/issues 로 해주세요
+# 테스트 된 스크립트 버전: v2.10.0
+# 의존성: Vault, skript-reflect, SkQuery
+#######################################################################################
+
+options:
+    prefix: &6[주식]&f
+    # ----설정----
+    interval: 10 # 분
+    price_upper_limit: 1000000 # 최대 가격
+    price_lower_limit: 5 # 최소 가격
+    upper_limit: 1000 # 최대 상승 가격
+    lower_limit: 1000 # 최대 하락 가격
+    tax: 10 # 세금 %단위, 10 = 10%, 안넣을거면 0으로 설정하세요
+    start_price: 10000 # 시작 가격
+
+    # ----종목설정----
+    stock:
+        name:
+            1: TSMC
+            2: 오라클
+            3: 엔비디아
+            4: 애플
+            5: 마이크로소프트
+            6: 인텔
+            7: AMD
+            8: 넷플릭스
+            9: 알파벳
+            10: 퀄컴
+
+        modeldata:
+            checkstock: 20000 # 시세확인
+            1: 20001
+            2: 20002
+            3: 20003
+            4: 20004
+            5: 20005
+            6: 20006
+            7: 20007
+            8: 20008
+            9: 20009
+            10: 20010
+
+variables:
+    {notification::true} = "&6켜짐"
+    {notification::false} = "&4꺼짐"
+    {stock.lore.1::1} = "%{@start_price}%"
+    {stock.lore.1::2} = "%{@start_price}%"
+    {stock.lore.1::3} = "%{@start_price}%"
+    {stock.lore.1::4} = "%{@start_price}%"
+    {stock.lore.1::5} = "%{@start_price}%"
+    {stock.color.1::1} = "&f"
+    {stock.color.1::2} = "&f"
+    {stock.color.1::3} = "&f"
+    {stock.color.1::4} = "&f"
+    {stock.color.1::5} = "&f"
+    {stock.lore.2::1} = "%{@start_price}%"
+    {stock.lore.2::2} = "%{@start_price}%"
+    {stock.lore.2::3} = "%{@start_price}%"
+    {stock.lore.2::4} = "%{@start_price}%"
+    {stock.lore.2::5} = "%{@start_price}%"
+    {stock.color.2::1} = "&f"
+    {stock.color.2::2} = "&f"
+    {stock.color.2::3} = "&f"
+    {stock.color.2::4} = "&f"
+    {stock.color.2::5} = "&f"
+    {stock.lore.3::1} = "%{@start_price}%"
+    {stock.lore.3::2} = "%{@start_price}%"
+    {stock.lore.3::3} = "%{@start_price}%"
+    {stock.lore.3::4} = "%{@start_price}%"
+    {stock.lore.3::5} = "%{@start_price}%"
+    {stock.color.3::1} = "&f"
+    {stock.color.3::2} = "&f"
+    {stock.color.3::3} = "&f"
+    {stock.color.3::4} = "&f"
+    {stock.color.3::5} = "&f"
+    {stock.lore.4::1} = "%{@start_price}%"
+    {stock.lore.4::2} = "%{@start_price}%"
+    {stock.lore.4::3} = "%{@start_price}%"
+    {stock.lore.4::4} = "%{@start_price}%"
+    {stock.lore.4::5} = "%{@start_price}%"
+    {stock.color.4::1} = "&f"
+    {stock.color.4::2} = "&f"
+    {stock.color.4::3} = "&f"
+    {stock.color.4::4} = "&f"
+    {stock.color.4::5} = "&f"
+    {stock.lore.5::1} = "%{@start_price}%"
+    {stock.lore.5::2} = "%{@start_price}%"
+    {stock.lore.5::3} = "%{@start_price}%"
+    {stock.lore.5::4} = "%{@start_price}%"
+    {stock.lore.5::5} = "%{@start_price}%"
+    {stock.color.5::1} = "&f"
+    {stock.color.5::2} = "&f"
+    {stock.color.5::3} = "&f"
+    {stock.color.5::4} = "&f"
+    {stock.color.5::5} = "&f"
+    {stock.lore.6::1} = "%{@start_price}%"
+    {stock.lore.6::2} = "%{@start_price}%"
+    {stock.lore.6::3} = "%{@start_price}%"
+    {stock.lore.6::4} = "%{@start_price}%"
+    {stock.lore.6::5} = "%{@start_price}%"
+    {stock.color.6::1} = "&f"
+    {stock.color.6::2} = "&f"
+    {stock.color.6::3} = "&f"
+    {stock.color.6::4} = "&f"
+    {stock.color.6::5} = "&f"
+    {stock.lore.7::1} = "%{@start_price}%"
+    {stock.lore.7::2} = "%{@start_price}%"
+    {stock.lore.7::3} = "%{@start_price}%"
+    {stock.lore.7::4} = "%{@start_price}%"
+    {stock.lore.7::5} = "%{@start_price}%"
+    {stock.color.7::1} = "&f"
+    {stock.color.7::2} = "&f"
+    {stock.color.7::3} = "&f"
+    {stock.color.7::4} = "&f"
+    {stock.color.7::5} = "&f"
+    {stock.lore.8::1} = "%{@start_price}%"
+    {stock.lore.8::2} = "%{@start_price}%"
+    {stock.lore.8::3} = "%{@start_price}%"
+    {stock.lore.8::4} = "%{@start_price}%"
+    {stock.lore.8::5} = "%{@start_price}%"
+    {stock.color.8::1} = "&f"
+    {stock.color.8::2} = "&f"
+    {stock.color.8::3} = "&f"
+    {stock.color.8::4} = "&f"
+    {stock.color.8::5} = "&f"
+    {stock.lore.9::1} = "%{@start_price}%"
+    {stock.lore.9::2} = "%{@start_price}%"
+    {stock.lore.9::3} = "%{@start_price}%"
+    {stock.lore.9::4} = "%{@start_price}%"
+    {stock.lore.9::5} = "%{@start_price}%"
+    {stock.color.9::1} = "&f"
+    {stock.color.9::2} = "&f"
+    {stock.color.9::3} = "&f"
+    {stock.color.9::4} = "&f"
+    {stock.color.9::5} = "&f"
+    {stock.lore.10::1} = "%{@start_price}%"
+    {stock.lore.10::2} = "%{@start_price}%"
+    {stock.lore.10::3} = "%{@start_price}%"
+    {stock.lore.10::4} = "%{@start_price}%"
+    {stock.lore.10::5} = "%{@start_price}%"
+    {stock.color.10::1} = "&f"
+    {stock.color.10::2} = "&f"
+    {stock.color.10::3} = "&f"
+    {stock.color.10::4} = "&f"
+    {stock.color.10::5} = "&f"
+
+
+on load:
+    set {notification::<none>} to "&6켜짐"
+
+on join:
+    if {stock.have.1::%uuid of player%} is not set:
+        set {stock.have.1::%uuid of player%} to 0
+    if {stock.have.2::%uuid of player%} is not set:
+        set {stock.have.2::%uuid of player%} to 0
+    if {stock.have.3::%uuid of player%} is not set:
+        set {stock.have.3::%uuid of player%} to 0
+    if {stock.have.4::%uuid of player%} is not set:
+        set {stock.have.4::%uuid of player%} to 0
+    if {stock.have.5::%uuid of player%} is not set:
+        set {stock.have.5::%uuid of player%} to 0
+    if {stock.have.6::%uuid of player%} is not set:
+        set {stock.have.6::%uuid of player%} to 0
+    if {stock.have.7::%uuid of player%} is not set:
+        set {stock.have.7::%uuid of player%} to 0
+    if {stock.have.8::%uuid of player%} is not set:
+        set {stock.have.8::%uuid of player%} to 0
+    if {stock.have.9::%uuid of player%} is not set:
+        set {stock.have.9::%uuid of player%} to 0
+    if {stock.have.10::%uuid of player%} is not set:
+        set {stock.have.10::%uuid of player%} to 0
+
+function stock_main(p:player):
+    open chest with 3 rows named "&0주식 메뉴" to {_p}
+    set slot 10 of current inventory of {_p} to bell named "&e알림설정" with lore "&f 메시지 : %{notification::%{stock.notification.text::%uuid of {_p}%}%}%", "&f 소리 : %{notification::%{stock.notification.sound::%uuid of {_p}%}%}%", " ", "&7좌클릭으로 메시지 알림 변경" and "&7우클릭으로 소리 알림 변경"
+    set slot 13 of current inventory of {_p} to paper named "&e시세확인" with custom model data {@stock.modeldata.checkstock}
+    set slot 16 of current inventory of {_p} to clock named "&e주가변동" with lore "&8%{@interval} - {stock.tax::min}%&7분 남음"
+
+function stock_price(p:player):
+    play sound "minecraft:ui.button.click" to {_p}
+    open chest with 3 rows named "&0주식 메뉴 (시세)" to {_p}
+    stock_refresh({_p})
+    set slot 18 of current inventory of {_p} to arrow named "&c뒤로가기"
+    set slot 22 of current inventory of {_p} to nether star named "&c새로고침"
+
+function price_change(num:int):
+    set {stock.lore.%{_num}%::5} to {stock.lore.%{_num}%::4}
+    set {stock.color.%{_num}%::5} to {stock.color.%{_num}%::4}
+    set {stock.lore.%{_num}%::4} to {stock.lore.%{_num}%::3}
+    set {stock.color.%{_num}%::4} to {stock.color.%{_num}%::3}
+    set {stock.lore.%{_num}%::3} to {stock.lore.%{_num}%::2}
+    set {stock.color.%{_num}%::3} to {stock.color.%{_num}%::2}
+    set {stock.lore.%{_num}%::2} to {stock.lore.%{_num}%::1}
+    set {stock.color.%{_num}%::2} to {stock.color.%{_num}%::1}
+    set {_change} to random integer between -{@upper_limit} and {@lower_limit}
+    if {stock.lore.%{_num}%::1} + {_change} is less than {@price_lower_limit}:
+        set {stock.lore.%{_num}%::1} to {@price_lower_limit}
+    else if {stock.lore.%{_num}%::1} + {_change} is greater than {@price_upper_limit}:
+        set {stock.lore.%{_num}%::1} to {@price_upper_limit}
+    else:
+        set {stock.lore.%{_num}%::1} to {stock.lore.%{_num}%::1} + {_change}
+    if {stock.lore.%{_num}%::1} is greater than {stock.lore.%{_num}%::2}:
+        set {stock.color.%{_num}%::1} to "&4↑ "
+    if {stock.lore.%{_num}%::1} is {stock.lore.%{_num}%::2}:
+        set {stock.color.%{_num}%::1} to "&f- "
+    if {stock.lore.%{_num}%::1} is less than {stock.lore.%{_num}%::2}:
+        set {stock.color.%{_num}%::1} to "&9↓ "
+    
+function stock_refresh(p:player):
+    set slot 0 of current inventory of {_p} to paper named "&f{@stock.name.1}" with lore "&7보유 주식: &8%{stock.have.1::%uuid of {_p}%}%&7개", " ", "&7현재가: %{stock.color.1::1}%%{stock.lore.1::1}%", "%{stock.color.1::2}%%{stock.lore.1::2}%", "%{stock.color.1::3}%%{stock.lore.1::3}%", "%{stock.color.1::4}%%{stock.lore.1::4}%", "%{stock.color.1::5}%%{stock.lore.1::5}%", " ", "&7좌클릭으로 1주 구매", "&7Shift + 좌클릭으로 10주 구매", "&7우클릭으로 1주 판매", "&7Shift + 우클릭으로 10주 판매" with custom model data {@stock.modeldata.1}
+    set slot 1 of current inventory of {_p} to paper named "&f{@stock.name.2}" with lore "&7보유 주식: &8%{stock.have.2::%uuid of {_p}%}%&7개", " ", "&7현재가: %{stock.color.2::1}%%{stock.lore.2::1}%", "%{stock.color.2::2}%%{stock.lore.2::2}%", "%{stock.color.2::3}%%{stock.lore.2::3}%", "%{stock.color.2::4}%%{stock.lore.2::4}%", "%{stock.color.2::5}%%{stock.lore.2::5}%", " ", "&7좌클릭으로 1주 구매", "&7Shift + 좌클릭으로 10주 구매", "&7우클릭으로 1주 판매", "&7Shift + 우클릭으로 10주 판매" with custom model data {@stock.modeldata.2}
+    set slot 2 of current inventory of {_p} to paper named "&f{@stock.name.3}" with lore "&7보유 주식: &8%{stock.have.3::%uuid of {_p}%}%&7개", " ", "&7현재가: %{stock.color.3::1}%%{stock.lore.3::1}%", "%{stock.color.3::2}%%{stock.lore.3::2}%", "%{stock.color.3::3}%%{stock.lore.3::3}%", "%{stock.color.3::4}%%{stock.lore.3::4}%", "%{stock.color.3::5}%%{stock.lore.3::5}%", " ", "&7좌클릭으로 1주 구매", "&7Shift + 좌클릭으로 10주 구매", "&7우클릭으로 1주 판매", "&7Shift + 우클릭으로 10주 판매" with custom model data {@stock.modeldata.3}
+    set slot 3 of current inventory of {_p} to paper named "&f{@stock.name.4}" with lore "&7보유 주식: &8%{stock.have.4::%uuid of {_p}%}%&7개", " ", "&7현재가: %{stock.color.4::1}%%{stock.lore.4::1}%", "%{stock.color.4::2}%%{stock.lore.4::2}%", "%{stock.color.4::3}%%{stock.lore.4::3}%", "%{stock.color.4::4}%%{stock.lore.4::4}%", "%{stock.color.4::5}%%{stock.lore.4::5}%", " ", "&7좌클릭으로 1주 구매", "&7Shift + 좌클릭으로 10주 구매", "&7우클릭으로 1주 판매", "&7Shift + 우클릭으로 10주 판매" with custom model data {@stock.modeldata.4}
+    set slot 4 of current inventory of {_p} to paper named "&f{@stock.name.5}" with lore "&7보유 주식: &8%{stock.have.5::%uuid of {_p}%}%&7개", " ", "&7현재가: %{stock.color.5::1}%%{stock.lore.5::1}%", "%{stock.color.5::2}%%{stock.lore.5::2}%", "%{stock.color.5::3}%%{stock.lore.5::3}%", "%{stock.color.5::4}%%{stock.lore.5::4}%", "%{stock.color.5::5}%%{stock.lore.5::5}%", " ", "&7좌클릭으로 1주 구매", "&7Shift + 좌클릭으로 10주 구매", "&7우클릭으로 1주 판매", "&7Shift + 우클릭으로 10주 판매" with custom model data {@stock.modeldata.5}
+    set slot 5 of current inventory of {_p} to paper named "&f{@stock.name.6}" with lore "&7보유 주식: &8%{stock.have.6::%uuid of {_p}%}%&7개", " ", "&7현재가: %{stock.color.6::1}%%{stock.lore.6::1}%", "%{stock.color.6::2}%%{stock.lore.6::2}%", "%{stock.color.6::3}%%{stock.lore.6::3}%", "%{stock.color.6::4}%%{stock.lore.6::4}%", "%{stock.color.6::5}%%{stock.lore.6::5}%", " ", "&7좌클릭으로 1주 구매", "&7Shift + 좌클릭으로 10주 구매", "&7우클릭으로 1주 판매", "&7Shift + 우클릭으로 10주 판매" with custom model data {@stock.modeldata.6}
+    set slot 6 of current inventory of {_p} to paper named "&f{@stock.name.7}" with lore "&7보유 주식: &8%{stock.have.7::%uuid of {_p}%}%&7개", " ", "&7현재가: %{stock.color.7::1}%%{stock.lore.7::1}%", "%{stock.color.7::2}%%{stock.lore.7::2}%", "%{stock.color.7::3}%%{stock.lore.7::3}%", "%{stock.color.7::4}%%{stock.lore.7::4}%", "%{stock.color.7::5}%%{stock.lore.7::5}%", " ", "&7좌클릭으로 1주 구매", "&7Shift + 좌클릭으로 10주 구매", "&7우클릭으로 1주 판매", "&7Shift + 우클릭으로 10주 판매" with custom model data {@stock.modeldata.7}
+    set slot 7 of current inventory of {_p} to paper named "&f{@stock.name.8}" with lore "&7보유 주식: &8%{stock.have.8::%uuid of {_p}%}%&7개", " ", "&7현재가: %{stock.color.8::1}%%{stock.lore.8::1}%", "%{stock.color.8::2}%%{stock.lore.8::2}%", "%{stock.color.8::3}%%{stock.lore.8::3}%", "%{stock.color.8::4}%%{stock.lore.8::4}%", "%{stock.color.8::5}%%{stock.lore.8::5}%", " ", "&7좌클릭으로 1주 구매", "&7Shift + 좌클릭으로 10주 구매", "&7우클릭으로 1주 판매", "&7Shift + 우클릭으로 10주 판매" with custom model data {@stock.modeldata.8}
+    set slot 8 of current inventory of {_p} to paper named "&f{@stock.name.9}" with lore "&7보유 주식: &8%{stock.have.9::%uuid of {_p}%}%&7개", " ", "&7현재가: %{stock.color.9::1}%%{stock.lore.9::1}%", "%{stock.color.9::2}%%{stock.lore.9::2}%", "%{stock.color.9::3}%%{stock.lore.9::3}%", "%{stock.color.9::4}%%{stock.lore.9::4}%", "%{stock.color.9::5}%%{stock.lore.9::5}%", " ", "&7좌클릭으로 1주 구매", "&7Shift + 좌클릭으로 10주 구매", "&7우클릭으로 1주 판매", "&7Shift + 우클릭으로 10주 판매" with custom model data {@stock.modeldata.9}
+    set slot 9 of current inventory of {_p} to paper named "&f{@stock.name.10}" with lore "&7보유 주식: &8%{stock.have.10::%uuid of {_p}%}%&7개", " ", "&7현재가: %{stock.color.10::1}%%{stock.lore.10::1}%", "%{stock.color.10::2}%%{stock.lore.10::2}%", "%{stock.color.10::3}%%{stock.lore.10::3}%", "%{stock.color.10::4}%%{stock.lore.10::4}%", "%{stock.color.10::5}%%{stock.lore.10::5}%", " ", "&7좌클릭으로 1주 구매", "&7Shift + 좌클릭으로 10주 구매", "&7우클릭으로 1주 판매", "&7Shift + 우클릭으로 10주 판매" with custom model data {@stock.modeldata.10}
+
+function stock_buy(p:player, stock_number: number, amount: number):
+    if {_p}'s money is greater than or equal to {stock.lore.%{_stock_number}%::1} * {_amount}:
+        play sound "minecraft:block.note_block.bell" to {_p}
+        add {_amount} to {stock.have.%{_stock_number}%::%uuid of {_p}%}
+        remove {stock.lore.%{_stock_number}%::1} * {_amount} from {_p}'s money
+        if {_stock_number} is 1:
+            send "{@prefix} &a{@stock.name.1} %{_amount}%개를 %{stock.lore.1::1}%원에 &3구매&a했습니다" to {_p}
+        else if {_stock_number} is 2:
+            send "{@prefix} &a{@stock.name.2} %{_amount}%개를 %{stock.lore.2::1}%원에 &3구매&a했습니다" to {_p}
+        else if {_stock_number} is 3:
+            send "{@prefix} &a{@stock.name.3} %{_amount}%개를 %{stock.lore.3::1}%원에 &3구매&a했습니다" to {_p}
+        else if {_stock_number} is 4:
+            send "{@prefix} &a{@stock.name.4} %{_amount}%개를 %{stock.lore.4::1}%원에 &3구매&a했습니다" to {_p}
+        else if {_stock_number} is 5:
+            send "{@prefix} &a{@stock.name.5} %{_amount}%개를 %{stock.lore.5::1}%원에 &3구매&a했습니다" to {_p}
+        else if {_stock_number} is 6:
+            send "{@prefix} &a{@stock.name.6} %{_amount}%개를 %{stock.lore.6::1}%원에 &3구매&a했습니다" to {_p}
+        else if {_stock_number} is 7:
+            send "{@prefix} &a{@stock.name.7} %{_amount}%개를 %{stock.lore.7::1}%원에 &3구매&a했습니다" to {_p}
+        else if {_stock_number} is 8:
+            send "{@prefix} &a{@stock.name.8} %{_amount}%개를 %{stock.lore.8::1}%원에 &3구매&a했습니다" to {_p}
+        else if {_stock_number} is 9:
+            send "{@prefix} &a{@stock.name.9} %{_amount}%개를 %{stock.lore.9::1}%원에 &3구매&a했습니다" to {_p}
+        else if {_stock_number} is 10:
+            send "{@prefix} &a{@stock.name.10} %{_amount}%개를 %{stock.lore.10::1}%원에 &3구매&a했습니다" to {_p}
+        stock_refresh({_p})
+    else:
+        send "{@prefix} &c돈이 부족해 주식을 구매하지 못했습니다" to {_p}
+        play sound "minecraft:entity.villager.no" to {_p}
+
+function stock_sell(p:player, stock_number: number, amount: number):
+    if {stock.have.%{_stock_number}%::%uuid of {_p}%} is greater than or equal to {_amount}:
+        play sound "minecraft:block.note_block.bell" to {_p}
+        add floor({stock.lore.%{_stock_number}%::1} * {_amount} * (1 - {@tax} / 100)) to {_p}'s money
+        remove {_amount} from {stock.have.%{_stock_number}%::%uuid of {_p}%}
+        if {_stock_number} is 1:
+            send "{@prefix} &a{@stock.name.1} %{_amount}%개를 %{stock.lore.1::1}%원에 &c판매&a했습니다 &7총 판매금액: %floor({stock.lore.%{_stock_number}%::1} * {_amount} * (1 - {@tax} / 100))%원(세금포함)" to {_p}
+        else if {_stock_number} is 2:
+            send "{@prefix} &a{@stock.name.2} %{_amount}%개를 %{stock.lore.2::1}%원에 &c판매&a했습니다 &7총 판매금액: %floor({stock.lore.%{_stock_number}%::1} * {_amount} * (1 - {@tax} / 100))%원(세금포함)" to {_p}
+        else if {_stock_number} is 3:
+            send "{@prefix} &a{@stock.name.3} %{_amount}%개를 %{stock.lore.3::1}%원에 &c판매&a했습니다 &7총 판매금액: %floor({stock.lore.%{_stock_number}%::1} * {_amount} * (1 - {@tax} / 100))%원(세금포함)" to {_p}
+        else if {_stock_number} is 4:
+            send "{@prefix} &a{@stock.name.4} %{_amount}%개를 %{stock.lore.4::1}%원에 &c판매&a했습니다 &7총 판매금액: %floor({stock.lore.%{_stock_number}%::1} * {_amount} * (1 - {@tax} / 100))%원(세금포함)" to {_p}
+        else if {_stock_number} is 5:
+            send "{@prefix} &a{@stock.name.5} %{_amount}%개를 %{stock.lore.5::1}%원에 &c판매&a했습니다 &7총 판매금액: %floor({stock.lore.%{_stock_number}%::1} * {_amount} * (1 - {@tax} / 100))%원(세금포함)" to {_p}
+        else if {_stock_number} is 6:
+            send "{@prefix} &a{@stock.name.6} %{_amount}%개를 %{stock.lore.6::1}%원에 &c판매&a했습니다 &7총 판매금액: %floor({stock.lore.%{_stock_number}%::1} * {_amount} * (1 - {@tax} / 100))%원(세금포함)" to {_p}
+        else if {_stock_number} is 7:
+            send "{@prefix} &a{@stock.name.7} %{_amount}%개를 %{stock.lore.7::1}%원에 &c판매&a했습니다 &7총 판매금액: %floor({stock.lore.%{_stock_number}%::1} * {_amount} * (1 - {@tax} / 100))%원(세금포함)" to {_p}
+        else if {_stock_number} is 8:
+            send "{@prefix} &a{@stock.name.8} %{_amount}%개를 %{stock.lore.8::1}%원에 &c판매&a했습니다 &7총 판매금액: %floor({stock.lore.%{_stock_number}%::1} * {_amount} * (1 - {@tax} / 100))%원(세금포함)" to {_p}
+        else if {_stock_number} is 9:
+            send "{@prefix} &a{@stock.name.9} %{_amount}%개를 %{stock.lore.9::1}%원에 &c판매&a했습니다 &7총 판매금액: %floor({stock.lore.%{_stock_number}%::1} * {_amount} * (1 - {@tax} / 100))%원(세금포함)" to {_p}
+        else if {_stock_number} is 10:
+            send "{@prefix} &a{@stock.name.10} %{_amount}%개를 %{stock.lore.10::1}%원에 &c판매&a했습니다 &7총 판매금액: %floor({stock.lore.%{_stock_number}%::1} * {_amount} * (1 - {@tax} / 100))%원(세금포함)" to {_p}
+        stock_refresh({_p})
+    else:
+        send "{@prefix} &c주식이 부족해 주식을 판매하지 못했습니다" to {_p}
+        play sound "minecraft:entity.villager.no" to {_p}
+
+every 1 minute:
+    add 1 to {stock_min}
+    if {stock_min} is greater than or equal to {@interval}:
+        set {stock_min} to 0
+        send "{@prefix} &a주가가 변동되었습니다" to console
+        price_change(1)
+        price_change(2)
+        price_change(3)
+        price_change(4)
+        price_change(5)
+        price_change(6)
+        price_change(7)
+        price_change(8)
+        price_change(9)
+        price_change(10)
+        loop all players:
+            if {stock.notification.text::%uuid of loop-player%} is not false:
+                send "{@prefix} &a주가가 변동되었습니다" to loop-player
+            if {stock.notification.sound::%uuid of loop-player%} is not false:
+                play sound "block.note_block.pling" to loop-player
+
+on inventory click:
+    if inventory name is "&0주식 메뉴":
+        cancel event
+        if clicked slot is 10:
+            if clicked slot is bell named "&e알림설정":
+                if click type is left mouse:
+                    play sound "minecraft:ui.button.click"
+                    if {stock.notification.text::%uuid of player%} is not set:
+                        set {stock.notification.text::%uuid of player%} to false
+                        set slot 10 of current inventory of player to bell named "&e알림설정" with lore "&f 메시지 : %{notification::%{stock.notification.text::%uuid of player%}%}%", "&f 소리 : %{notification::%{stock.notification.sound::%uuid of player%}%}%", " ", "&7좌클릭으로 메시지 알림 변경" and "&7우클릭으로 소리 알림 변경"
+                        send "{@prefix} &a주식 메시지 알림이 &4비활성화&a되었습니다"
+                    else if {stock.notification.text::%uuid of player%} is true:
+                        set {stock.notification.text::%uuid of player%} to false
+                        set slot 10 of current inventory of player to bell named "&e알림설정" with lore "&f 메시지 : %{notification::%{stock.notification.text::%uuid of player%}%}%", "&f 소리 : %{notification::%{stock.notification.sound::%uuid of player%}%}%", " ", "&7좌클릭으로 메시지 알림 변경" and "&7우클릭으로 소리 알림 변경"
+                        send "{@prefix} &a주식 메시지 알림이 &4비활성화&a되었습니다"
+                    else if {stock.notification.text::%uuid of player%} is false:
+                        set {stock.notification.text::%uuid of player%} to true
+                        set slot 10 of current inventory of player to bell named "&e알림설정" with lore "&f 메시지 : %{notification::%{stock.notification.text::%uuid of player%}%}%", "&f 소리 : %{notification::%{stock.notification.sound::%uuid of player%}%}%", " ", "&7좌클릭으로 메시지 알림 변경" and "&7우클릭으로 소리 알림 변경"
+                        send "{@prefix} &a주식 메시지 알림이 &6활성화&a되었습니다"
+
+                else if click type is right mouse:
+                    play sound "minecraft:ui.button.click"
+                    if {stock.notification.sound::%uuid of player%} is not set:
+                        set {stock.notification.sound::%uuid of player%} to false
+                        set slot 10 of current inventory of player to bell named "&e알림설정" with lore "&f 메시지 : %{notification::%{stock.notification.text::%uuid of player%}%}%", "&f 소리 : %{notification::%{stock.notification.sound::%uuid of player%}%}%", " ", "&7좌클릭으로 메시지 알림 변경" and "&7우클릭으로 소리 알림 변경"
+                        send "{@prefix} &a주식 소리 알림이 &4비활성화&a되었습니다"
+                    else if {stock.notification.sound::%uuid of player%} is true:
+                        set {stock.notification.sound::%uuid of player%} to false
+                        set slot 10 of current inventory of player to bell named "&e알림설정" with lore "&f 메시지 : %{notification::%{stock.notification.text::%uuid of player%}%}%", "&f 소리 : %{notification::%{stock.notification.sound::%uuid of player%}%}%", " ", "&7좌클릭으로 메시지 알림 변경" and "&7우클릭으로 소리 알림 변경"
+                        send "{@prefix} &a주식 소리 알림이 &4비활성화&a되었습니다"
+                    else if {stock.notification.sound::%uuid of player%} is false:
+                        set {stock.notification.sound::%uuid of player%} to true
+                        set slot 10 of current inventory of player to bell named "&e알림설정" with lore "&f 메시지 : %{notification::%{stock.notification.text::%uuid of player%}%}%", "&f 소리 : %{notification::%{stock.notification.sound::%uuid of player%}%}%", " ", "&7좌클릭으로 메시지 알림 변경" and "&7우클릭으로 소리 알림 변경"
+                        send "{@prefix} &a주식 소리 알림이 &6활성화&a되었습니다"
+                        
+        if clicked slot is 13:
+            if clicked slot is paper named "&e시세확인" with custom model data {@stock.modeldata.checkstock}:
+                stock_price(player)
+
+    if inventory name is "&0주식 메뉴 (시세)":
+        cancel event
+        if clicked slot is nether star named "&c새로고침":
+            play sound "minecraft:ui.button.click" to player
+            stock_refresh(player)
+        else if clicked slot is arrow named "&c뒤로가기":
+            play sound "minecraft:ui.button.click" to player
+            stock_main(player)
+        else if clicked slot is paper named "&f{@stock.name.1}" with custom model data {@stock.modeldata.1}:
+            if click type is left mouse with shift:
+                stock_buy(player, 1, 10)
+            else if click type is left mouse:
+                stock_buy(player, 1, 1)
+            else if click type is right mouse with shift:
+                stock_sell(player, 1, 10)
+            else if click type is right mouse:
+                stock_sell(player, 1, 1)
+        else if clicked slot is paper named "&f{@stock.name.2}" with custom model data {@stock.modeldata.2}:
+            if click type is left mouse with shift:
+                stock_buy(player, 2, 10)
+            else if click type is left mouse:
+                stock_buy(player, 2, 1)
+            else if click type is right mouse with shift:
+                stock_sell(player, 2, 10)
+            else if click type is right mouse:
+                stock_sell(player, 2, 1)
+        else if clicked slot is paper named "&f{@stock.name.3}" with custom model data {@stock.modeldata.3}:
+            if click type is left mouse with shift:
+                stock_buy(player, 3, 10)
+            else if click type is left mouse:
+                stock_buy(player, 3, 1)
+            else if click type is right mouse with shift:
+                stock_sell(player, 3, 10)
+            else if click type is right mouse:
+                stock_sell(player, 3, 1)
+        else if clicked slot is paper named "&f{@stock.name.4}" with custom model data {@stock.modeldata.4}:
+            if click type is left mouse with shift:
+                stock_buy(player, 4, 10)
+            else if click type is left mouse:
+                stock_buy(player, 4, 1)
+            else if click type is right mouse with shift:
+                stock_sell(player, 4, 10)
+            else if click type is right mouse:
+                stock_sell(player, 4, 1)
+        else if clicked slot is paper named "&f{@stock.name.5}" with custom model data {@stock.modeldata.5}:
+            if click type is left mouse with shift:
+                stock_buy(player, 5, 10)
+            else if click type is left mouse:
+                stock_buy(player, 5, 1)
+            else if click type is right mouse with shift:
+                stock_sell(player, 5, 10)
+            else if click type is right mouse:
+                stock_sell(player, 5, 1)
+        else if clicked slot is paper named "&f{@stock.name.6}" with custom model data {@stock.modeldata.6}:
+            if click type is left mouse with shift:
+                stock_buy(player, 6, 10)
+            else if click type is left mouse:
+                stock_buy(player, 6, 1)
+            else if click type is right mouse with shift:
+                stock_sell(player, 6, 10)
+            else if click type is right mouse:
+                stock_sell(player, 6, 1)
+        else if clicked slot is paper named "&f{@stock.name.7}" with custom model data {@stock.modeldata.7}:
+            if click type is left mouse with shift:
+                stock_buy(player, 7, 10)
+            else if click type is left mouse:
+                stock_buy(player, 7, 1)
+            else if click type is right mouse with shift:
+                stock_sell(player, 7, 10)
+            else if click type is right mouse:
+                stock_sell(player, 7, 1)
+        else if clicked slot is paper named "&f{@stock.name.8}" with custom model data {@stock.modeldata.8}:
+            if click type is left mouse with shift:
+                stock_buy(player, 8, 10)
+            else if click type is left mouse:
+                stock_buy(player, 8, 1)
+            else if click type is right mouse with shift:
+                stock_sell(player, 8, 10)
+            else if click type is right mouse:
+                stock_sell(player, 8, 1)
+        else if clicked slot is paper named "&f{@stock.name.9}" with custom model data {@stock.modeldata.9}:
+            if click type is left mouse with shift:
+                stock_buy(player, 9, 10)
+            else if click type is left mouse:
+                stock_buy(player, 9, 1)
+            else if click type is right mouse with shift:
+                stock_sell(player, 9, 10)
+            else if click type is right mouse:
+                stock_sell(player, 9, 1)
+        else if clicked slot is paper named "&f{@stock.name.10}" with custom model data {@stock.modeldata.10}:
+            if click type is left mouse with shift:
+                stock_buy(player, 10, 10)
+            else if click type is left mouse:
+                stock_buy(player, 10, 1)
+            else if click type is right mouse with shift:
+                stock_sell(player, 10, 10)
+            else if click type is right mouse:
+                stock_sell(player, 10, 1)
+
+command /주식:
+    trigger:
+        stock_main(player)
