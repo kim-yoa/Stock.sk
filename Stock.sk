@@ -195,7 +195,7 @@ function price_change(num:int):
     set {stock.color.%{_num}%::3} to {stock.color.%{_num}%::2}
     set {stock.lore.%{_num}%::2} to {stock.lore.%{_num}%::1}
     set {stock.color.%{_num}%::2} to {stock.color.%{_num}%::1}
-    set {_change} to random integer between -{@upper_limit} and {@lower_limit}
+    set {_change} to random integer between -{@lower_limit} and {@upper_limit}
     if {stock.lore.%{_num}%::1} + {_change} is less than {@price_lower_limit}:
         set {stock.lore.%{_num}%::1} to {@price_lower_limit}
     else if {stock.lore.%{_num}%::1} + {_change} is greater than {@price_upper_limit}:
